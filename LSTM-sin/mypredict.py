@@ -1,5 +1,4 @@
 # tensorflow_version 2.0
-from matplotlib import font_manager
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation
@@ -9,7 +8,8 @@ import numpy as np
 import random
 import os 
 
-plt.rcParams['font.sans-serif']=['SimHei']
+plt.rcParams['font.sans-serif'] = ['SimHei'] #运行配置参数中的字体（font）为黑体（SimHei）
+plt.rcParams['axes.unicode_minus'] = False #运行配置参数总的轴（axes）正常显示正负号（minus）
 
 in_out_neurons = 1
 hidden_neurons = 300
