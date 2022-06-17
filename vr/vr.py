@@ -1,3 +1,4 @@
+from cProfile import label
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Activation
@@ -11,7 +12,7 @@ plt.rcParams['font.sans-serif'] = ['SimHei'] #运行配置参数中的字体（f
 plt.rcParams['axes.unicode_minus'] = False #运行配置参数总的轴（axes）正常显示正负号（minus）
 
 data_index = ['A','B','C','D','E','F','G','H','I','J'] # 读取的列
-vr_weight = [i+1 for i in range (10)] #权重
+vr_weight = [(i+1)*.01 for i in range (10)] #权重
 
 """处理数据集"""
 def dataset():
@@ -97,11 +98,12 @@ def predict(X_test,y_test):
     model = tf.keras.models.load_model('saved_model/my_model')
     predicted = model.predict(X_test)
     dataf = pd.DataFrame(predicted[:])
-    # dataf.columns = ["predict"]
-    # dataf["input"] = y_test[:]
+    print(dataf)
+
     dataf.plot(figsize=(18, 5))
+    plt.plot(X_test,y_test)
+    plt.plot(dataf)
     plt.xlabel("x")
-    # plt.xlabel("timr/s")
     plt.ylabel("y")
     plt.title("with time ")
     plt.show()
@@ -110,10 +112,11 @@ def predict(X_test,y_test):
 def main():
     df,score = dataset()
     (X_train, y_train), (X_test, y_test) = train_test_split(df[data_index],score,0.1)
-    print(X_train)
-    print(y_train)
-    print(X_test)
-    print(y_test)
+
+    # print(X_train,"\n")
+    # print(y_train)
+    # print(X_test)
+    # print(y_test)
 
     train(X_train,y_train)
     # while True:
