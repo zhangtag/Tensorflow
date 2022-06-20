@@ -40,9 +40,9 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
         cols.append(df.shift(-i))
         print(cols)
         if i == 0:
-        	names += [('var%d(t)' % (j+1)) for j in range(n_vars)]
+            names += [('var%d(t)' % (j+1)) for j in range(n_vars)]
         else:
-        	names += [('var%d(t+%d)' % (j+1, i)) for j in range(n_vars)]
+            names += [('var%d(t+%d)' % (j+1, i)) for j in range(n_vars)]
     print(cols)
     # 将列表中两个张量按照列拼接起来，list(v1,v2)->[v1,v2],其中v1向下移动了一行，此时v1,v2是监督学习型数据
     agg = concat(cols, axis=1)
@@ -52,16 +52,18 @@ def series_to_supervised(data, n_in=1, n_out=1, dropnan=True):
     print(agg)
     # 删除空值
     if dropnan:
-    	agg.dropna(inplace=True)
+        agg.dropna(inplace=True)
     return agg
 
 # load dataset
 dataset = read_csv('pollution.csv', header=0, index_col=0)
 values = dataset.values
+print("dataset.values")
 print(values)
 # 对第四列“风向”进行数字编码转换
 encoder = LabelEncoder()
 values[:,4] = encoder.fit_transform(values[:,4])
+print("values[:,4]")
 print(values[:,4])
 # 数据转换为浮点型
 values = values.astype('float32')
@@ -79,6 +81,7 @@ print(reframed.head())
 
 # split into train and test sets
 values = reframed.values
+print("reframed.values")
 print(values)
 # 取出一年的数据作为训练数据，剩下的做测试数据
 n_train_hours = 365 * 24
@@ -136,5 +139,6 @@ inv_y = scaler.inverse_transform(inv_y)
 # 逆缩放后取出第一列(真实列)y
 inv_y = inv_y[:,0]
 # 计算预测列和真实列的误差RMSE值
+
 rmse = sqrt(mean_squared_error(inv_y, inv_yhat))
 print('Test RMSE: %.3f' % rmse)
