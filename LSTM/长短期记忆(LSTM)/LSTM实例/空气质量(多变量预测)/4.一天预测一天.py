@@ -106,7 +106,7 @@ model.add(LSTM(300, input_shape=(train_X.shape[1], train_X.shape[2])))
 model.add(Dense(1))
 model.compile(loss='mae', optimizer='adam')
 # 拟合网络
-history = model.fit(train_X, train_y, epochs=10, batch_size=72, validation_data=(test_X, test_y), verbose=2, shuffle=False)
+history = model.fit(train_X, train_y, epochs=50, batch_size=72, validation_data=(test_X, test_y), verbose=2, shuffle=False)
 # 图像展示训练损失
 pyplot.plot(history.history['loss'], label='train')
 pyplot.plot(history.history['val_loss'], label='test')
@@ -147,13 +147,3 @@ inv_y = inv_y[:,0]
 
 rmse = sqrt(mean_squared_error(inv_y, inv_yhat))
 print('Test RMSE: %.3f' % rmse)
-
-dataf = pd.DataFrame(inv_yhat[:2000])
-dataf.columns = ["predict"]
-dataf["input"] = inv_y[:2000]
-dataf.plot(figsize=(18, 5))
-pyplot.xlabel("时间/s")
-# plt.xlabel("timr/s")
-pyplot.ylabel("pressure/pa")
-pyplot.title("pa with time ")
-pyplot.show()
