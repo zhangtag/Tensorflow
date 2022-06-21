@@ -102,7 +102,7 @@ print(train_X.shape, train_y.shape, test_X.shape, test_y.shape)
  
 # 设计网络结构
 model = Sequential()
-model.add(LSTM(300, input_shape=(train_X.shape[1], train_X.shape[2])))
+model.add(LSTM(100, input_shape=(train_X.shape[1], train_X.shape[2])))
 model.add(Dense(1))
 model.compile(loss='mae', optimizer='adam')
 # 拟合网络
@@ -111,8 +111,10 @@ history = model.fit(train_X, train_y, epochs=50, batch_size=72, validation_data=
 pyplot.plot(history.history['loss'], label='train')
 pyplot.plot(history.history['val_loss'], label='test')
 pyplot.legend()
-pyplot.show()
- 
+# pyplot.show()
+pyplot.savefig('loss.jpg')
+pyplot.clf()
+
 # 使用拟合后的网络进行预测
 yhat = model.predict(test_X)
 print(yhat[:10,:])
@@ -148,12 +150,13 @@ inv_y = inv_y[:,0]
 rmse = sqrt(mean_squared_error(inv_y, inv_yhat))
 print('Test RMSE: %.3f' % rmse)
 
-dataf = pd.DataFrame(inv_yhat[:200])
+dataf = pd.DataFrame(inv_yhat[:1500])
 dataf.columns = ["predict"]
-dataf["input"] = inv_y[:200]
+dataf["input"] = inv_y[:1500]
 dataf.plot(figsize=(18, 5))
-pyplot.xlabel("时间/s")
+pyplot.xlabel("次数")
 # plt.xlabel("timr/s")
-pyplot.ylabel("pressure/pa")
-pyplot.title("pa with time ")
-pyplot.show()
+pyplot.ylabel("压力/兆帕")
+# pyplot.title("pa with time ")
+# pyplot.show()
+pyplot.savefig('predict.jpg')
