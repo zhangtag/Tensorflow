@@ -148,9 +148,9 @@ inv_y = inv_y[:,0]
 rmse = sqrt(mean_squared_error(inv_y, inv_yhat))
 print('Test RMSE: %.3f' % rmse)
 
-dataf = pd.DataFrame(inv_yhat[:200])
+dataf = pd.DataFrame(inv_yhat[:2000])
 dataf.columns = ["predict"]
-dataf["input"] = inv_y[:200]
+dataf["input"] = inv_y[:2000]
 dataf.plot(figsize=(18, 5))
 pyplot.xlabel("时间/s")
 # plt.xlabel("timr/s")

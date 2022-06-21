@@ -25,7 +25,7 @@ def load_data(data, n_prev = 100):
 	return alsX, alsY
 
 # 划分出90%的数据用于训练
-def train_test_split(df, test_size = 0.1, n_prev = 100):
+def train_test_split(df, test_size = 0.5, n_prev = 100):
 	ntrn = round(len(df) * (1 - test_size))
 	ntrn = int(ntrn)
 	X_train, y_train = load_data(df.iloc[0:ntrn], n_prev)
@@ -108,14 +108,17 @@ def myfunc(x):
 
 def main():
     # 在“t”列存放1、2、3……50*80+1
-    df = pd.DataFrame(np.arange(steps_per_cycle * number_of_cycles + 1), columns=["t"])
+    # df = pd.DataFrame(np.arange(steps_per_cycle * number_of_cycles + 1), columns=["t"])
     # 在“pa”列存放sin(t+噪声)
-    df["pa"] = df.t.apply(lambda x: myfunc(x))
+    # df["pa"] = df.t.apply(lambda x: myfunc(x))
+    df = pd.read_csv('pollution.csv',usecols=['press'])
+    print(df.head(50))
+    # df.columns = ['Press']
     # 以“t”为横轴，“pa”为纵轴绘图
-    df[["pa"]].head(steps_per_cycle * 10).plot()
+    df.head(100).plot()
     plt.show()
 
-    (X_train, y_train), (X_test, y_test) = train_test_split(df[["pa"]], n_prev = length_of_sequences)
+    (X_train, y_train), (X_test, y_test) = train_test_split(df, n_prev = length_of_sequences)
 
     train(X_train,y_train)
     # while True:
